@@ -2,38 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:nivelamento_lumatec/app/modules/autenticacao/pages/template_page.dart';
-import 'package:nivelamento_lumatec/app/modules/autenticacao/store/autenticacao_store.dart';
 import 'package:nivelamento_lumatec/core/widgets/button_widget.dart';
 import 'package:nivelamento_lumatec/core/widgets/textfield_widget.dart';
 
-class LoginPage extends StatefulWidget {
-  LoginPage({Key? key}) : super(key: key);
+class CadastroPage extends StatefulWidget {
+  CadastroPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<CadastroPage> createState() => _CadastroPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _CadastroPageState extends State<CadastroPage> {
   final _keyForm = GlobalKey<FormState>();
 
-  AutenticacaoStore store = Modular.get();
-
-  TextEditingController txtUsuario = TextEditingController();
   TextEditingController txtSenha = TextEditingController();
+  TextEditingController txtRepitaSuaSenha = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return TemplateAutenticacaoPage(
-      child: Column(children: [
+        child: Column(
+      children: [
         BootstrapRow(children: [
           BootstrapCol(
-            child: Center(
-              child: Text(
-                "Como é bom te ver de novo",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
+            child: Text(
+              "Realize o seu cadastro",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
               ),
             ),
           ),
@@ -44,7 +40,18 @@ class _LoginPageState extends State<LoginPage> {
             BootstrapRow(children: [
               BootstrapCol(
                 child: TextFieldLumatec(
-                  controller: txtUsuario,
+                  hintText: "Nome",
+                  validator: (String? valor) {
+                    if (valor == "") {
+                      return "Por favor preencha esse campo";
+                    }
+                  },
+                ),
+              ),
+            ]),
+            BootstrapRow(children: [
+              BootstrapCol(
+                child: TextFieldLumatec(
                   hintText: "Usuario",
                   validator: (String? valor) {
                     if (valor == "") {
@@ -57,9 +64,9 @@ class _LoginPageState extends State<LoginPage> {
             BootstrapRow(children: [
               BootstrapCol(
                 child: TextFieldLumatec(
-                  controller: txtSenha,
                   hintText: "Senha",
                   obscure: true,
+                  controller: txtSenha,
                   validator: (String? valor) {
                     if (valor == "") {
                       return "Por favor preencha esse campo";
@@ -70,12 +77,28 @@ class _LoginPageState extends State<LoginPage> {
             ]),
             BootstrapRow(children: [
               BootstrapCol(
+                child: TextFieldLumatec(
+                  hintText: "Repita sua senha",
+                  obscure: true,
+                  controller: txtRepitaSuaSenha,
+                  validator: (String? valor) {
+                    if (valor == "") {
+                      return "Por favor preencha esse campo";
+                    }
+                    if (txtSenha.text != txtRepitaSuaSenha.text) {
+                      return "As senhas precisam ser iguais";
+                    }
+                  },
+                ),
+              ),
+            ]),
+            BootstrapRow(children: [
+              BootstrapCol(
                 child: ButtonLumatec(
-                  label: "Login",
+                  label: "Cadastrar",
                   color: Color(0xFF3BC171),
                   onPressed: () {
                     if (_keyForm.currentState!.validate()) {
-                      store.login(txtUsuario.text, txtSenha.text);
                     } else {
                       return null;
                     }
@@ -88,14 +111,14 @@ class _LoginPageState extends State<LoginPage> {
         BootstrapRow(children: [
           BootstrapCol(
               child: ButtonLumatec(
-            label: "Cadastrar",
+            label: "Voltar",
             color: Color(0xFF448AFF),
             onPressed: () {
-              Modular.to.pushNamed("cadastro");
+              Modular.to.pushNamed("/");
             },
           )),
         ]),
-      ]),
-    );
+      ],
+    ));
   }
 }
