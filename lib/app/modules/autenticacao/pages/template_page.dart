@@ -21,7 +21,7 @@ class TemplateAutenticacaoPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         body: BootstrapContainer(children: [
           Container(
-            height: 200,
+            height: 75,
           ),
           Container(
               decoration: BoxDecoration(
