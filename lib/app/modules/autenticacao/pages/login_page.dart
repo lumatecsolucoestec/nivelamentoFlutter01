@@ -96,32 +96,30 @@ class _LoginPageState extends State<LoginPage> {
             builder: (context) {
               return store.logado
                   ? Column(
-                    children: [
-                      ButtonLumatec(
+                      children: [
+                        ButtonLumatec(
                           label: "Editar Perfil",
                           color: Color(0xFF448AFF),
                           onPressed: () {
                             Modular.to.pushNamed("cadastro");
                           },
                         ),
-
-                         ButtonLumatec(
+                        ButtonLumatec(
                           label: "Cadastrar Novo usuario",
                           color: Color.fromARGB(255, 49, 1, 68),
                           onPressed: () {
-                            Modular.to.pushNamed("cadastro");
+                            Modular.to.pushNamed("usuario");
                           },
                         ),
-
-                         ButtonLumatec(
+                        ButtonLumatec(
                           label: "Sair",
                           color: Colors.red,
                           onPressed: () {
-                           store.sair();
+                            store.sair();
                           },
                         ),
-                    ],
-                  )
+                      ],
+                    )
                   : ButtonLumatec(
                       label: "Cadastrar",
                       color: Color(0xFF448AFF),
