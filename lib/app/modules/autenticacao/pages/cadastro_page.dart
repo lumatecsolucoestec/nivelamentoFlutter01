@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:nivelamento_lumatec/app/modules/autenticacao/pages/template_page.dart';
+import 'package:nivelamento_lumatec/app/modules/autenticacao/store/autenticacao_store.dart';
 import 'package:nivelamento_lumatec/core/widgets/button_widget.dart';
 import 'package:nivelamento_lumatec/core/widgets/textfield_widget.dart';
 
@@ -15,8 +17,16 @@ class CadastroPage extends StatefulWidget {
 class _CadastroPageState extends State<CadastroPage> {
   final _keyForm = GlobalKey<FormState>();
 
-  TextEditingController txtSenha = TextEditingController();
-  TextEditingController txtRepitaSuaSenha = TextEditingController();
+  AutenticacaoStore store = Modular.get();
+
+  @override
+  void initState() {
+    super.initState();
+    store.buildContext = context;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      store.formulario();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +35,15 @@ class _CadastroPageState extends State<CadastroPage> {
       children: [
         BootstrapRow(children: [
           BootstrapCol(
-            child: Text(
-              "Realize o seu cadastro",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
+            child: Observer(builder: (_) {
+              return Text(
+                store.logado ? "Edite seu perfil" : "Realize o seu cadastro",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              );
+            }),
           ),
         ]),
         Form(
@@ -40,6 +52,7 @@ class _CadastroPageState extends State<CadastroPage> {
             BootstrapRow(children: [
               BootstrapCol(
                 child: TextFieldLumatec(
+                  controller: store.txtNome,
                   hintText: "Nome",
                   validator: (String? valor) {
                     if (valor == "") {
@@ -53,6 +66,7 @@ class _CadastroPageState extends State<CadastroPage> {
               BootstrapCol(
                 child: TextFieldLumatec(
                   hintText: "Usuario",
+                  controller: store.txtUsuario,
                   validator: (String? valor) {
                     if (valor == "") {
                       return "Por favor preencha esse campo";
@@ -66,7 +80,7 @@ class _CadastroPageState extends State<CadastroPage> {
                 child: TextFieldLumatec(
                   hintText: "Senha",
                   obscure: true,
-                  controller: txtSenha,
+                  controller: store.txtSenha,
                   validator: (String? valor) {
                     if (valor == "") {
                       return "Por favor preencha esse campo";
@@ -80,12 +94,12 @@ class _CadastroPageState extends State<CadastroPage> {
                 child: TextFieldLumatec(
                   hintText: "Repita sua senha",
                   obscure: true,
-                  controller: txtRepitaSuaSenha,
+                  controller: store.txtRepitaSuaSenha,
                   validator: (String? valor) {
                     if (valor == "") {
                       return "Por favor preencha esse campo";
                     }
-                    if (txtSenha.text != txtRepitaSuaSenha.text) {
+                    if (store.txtSenha.text != store.txtRepitaSuaSenha.text) {
                       return "As senhas precisam ser iguais";
                     }
                   },
@@ -94,16 +108,17 @@ class _CadastroPageState extends State<CadastroPage> {
             ]),
             BootstrapRow(children: [
               BootstrapCol(
-                child: ButtonLumatec(
-                  label: "Cadastrar",
-                  color: Color(0xFF3BC171),
-                  onPressed: () {
-                    if (_keyForm.currentState!.validate()) {
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
+                child: Observer(builder: (_) {
+                  return ButtonLumatec(
+                    label: store.logado ? "Editar" : "Cadastrar",
+                    color: Color(0xFF3BC171),
+                    onPressed: () {
+                      if (_keyForm.currentState!.validate()) {
+                        store.cadastro();
+                      } else {}
+                    },
+                  );
+                }),
               ),
             ]),
           ]),

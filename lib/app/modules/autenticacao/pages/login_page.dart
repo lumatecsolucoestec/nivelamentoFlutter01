@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:nivelamento_lumatec/app/modules/autenticacao/pages/template_page.dart';
 import 'package:nivelamento_lumatec/app/modules/autenticacao/store/autenticacao_store.dart';
@@ -20,6 +21,11 @@ class _LoginPageState extends State<LoginPage> {
 
   TextEditingController txtUsuario = TextEditingController();
   TextEditingController txtSenha = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    store.verficarLogin();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,12 +92,43 @@ class _LoginPageState extends State<LoginPage> {
           ]),
         ),
         BootstrapRow(children: [
-          BootstrapCol(
-              child: ButtonLumatec(
-            label: "Cadastrar",
-            color: Color(0xFF448AFF),
-            onPressed: () {
-              Modular.to.pushNamed("cadastro");
+          BootstrapCol(child: Observer(
+            builder: (context) {
+              return store.logado
+                  ? Column(
+                    children: [
+                      ButtonLumatec(
+                          label: "Editar Perfil",
+                          color: Color(0xFF448AFF),
+                          onPressed: () {
+                            Modular.to.pushNamed("cadastro");
+                          },
+                        ),
+
+                         ButtonLumatec(
+                          label: "Cadastrar Novo usuario",
+                          color: Color.fromARGB(255, 49, 1, 68),
+                          onPressed: () {
+                            Modular.to.pushNamed("cadastro");
+                          },
+                        ),
+
+                         ButtonLumatec(
+                          label: "Sair",
+                          color: Colors.red,
+                          onPressed: () {
+                           store.sair();
+                          },
+                        ),
+                    ],
+                  )
+                  : ButtonLumatec(
+                      label: "Cadastrar",
+                      color: Color(0xFF448AFF),
+                      onPressed: () {
+                        Modular.to.pushNamed("cadastro");
+                      },
+                    );
             },
           )),
         ]),
