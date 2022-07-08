@@ -5,6 +5,8 @@ import 'package:nivelamento_lumatec/app/modules/autenticacao/service/autenticaca
 import 'package:nivelamento_lumatec/app/modules/autenticacao/service/autenticacao_service_impl.dart';
 import 'package:nivelamento_lumatec/app/modules/autenticacao/store/autenticacao_store.dart';
 
+import '../usuario/usuario_module.dart';
+
 class AutenticacaoModule extends Module {
   @override
   final List<Bind> binds = [
@@ -16,5 +18,6 @@ class AutenticacaoModule extends Module {
   final List<ModularRoute> routes = [
     ChildRoute('/', child: (_, args) => LoginPage()),
     ChildRoute('/cadastro', child: (_, args) => CadastroPage()),
+    ModuleRoute('/usuario/', module: UsuarioModule())
   ];
 }
