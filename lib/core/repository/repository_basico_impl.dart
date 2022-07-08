@@ -12,6 +12,12 @@ class RepositoryBasicoImpl implements RepositoryBasico {
   @override
   post(String url, Map body) async {
     var resposta = await http.post(Uri.parse(url), body: body);
-   return RetornoAPI(statusCode: resposta.statusCode, body: resposta.body);
+    return RetornoAPI(statusCode: resposta.statusCode, body: resposta.body);
+  }
+
+  @override
+  put(String url, Map body) async {
+    var resposta = await http.put(Uri.parse(url), body: body);
+    return RetornoAPI(statusCode: resposta.statusCode, body: resposta.body);
   }
 }
