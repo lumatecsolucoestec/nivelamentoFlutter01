@@ -15,4 +15,10 @@ class RepositoryBasicoDIO implements RepositoryBasico {
     var response = await Dio().post(url, data: body);
     return RetornoAPI(statusCode: response.statusCode!, body: response.data);
   }
+
+  @override
+  put(String url, Map body) async {
+    var response = await Dio().put(url, data: body);
+    return RetornoAPI(statusCode: response.statusCode!, body: response.data);
+  }
 }

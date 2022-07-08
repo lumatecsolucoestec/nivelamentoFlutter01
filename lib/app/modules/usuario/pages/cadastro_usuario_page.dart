@@ -39,17 +39,26 @@ class CadastroUsuario extends StatelessWidget {
                   ),
                 ],
               ),
-              TextFieldLumatec(hintText: 'Nome'),
+              TextFieldLumatec(
+                hintText: 'Nome',
+                controller: store.nome,
+              ),
               Row(
                 children: [
                   Flexible(
-                    child: TextFieldLumatec(hintText: 'E-mail'),
+                    child: TextFieldLumatec(
+                      hintText: 'E-mail',
+                      controller: store.email,
+                    ),
                   ),
                   const SizedBox(
                     width: 10,
                   ),
                   Flexible(
-                    child: TextFieldLumatec(hintText: 'Telefone / Celular'),
+                    child: TextFieldLumatec(
+                      hintText: 'Telefone / Celular',
+                      controller: store.telefone,
+                    ),
                   ),
                 ],
               ),
@@ -57,14 +66,20 @@ class CadastroUsuario extends StatelessWidget {
                 children: [
                   Flexible(
                     flex: 2,
-                    child: TextFieldLumatec(hintText: 'Rua'),
+                    child: TextFieldLumatec(
+                      hintText: 'Rua',
+                      controller: store.rua,
+                    ),
                   ),
                   const SizedBox(
                     width: 10,
                   ),
                   Flexible(
                     flex: 1,
-                    child: TextFieldLumatec(hintText: 'Número'),
+                    child: TextFieldLumatec(
+                      hintText: 'Número',
+                      controller: store.numero,
+                    ),
                   ),
                 ],
               ),
@@ -72,14 +87,20 @@ class CadastroUsuario extends StatelessWidget {
                 children: [
                   Flexible(
                     flex: 2,
-                    child: TextFieldLumatec(hintText: 'Estado'),
+                    child: TextFieldLumatec(
+                      hintText: 'Estado',
+                      controller: store.estado,
+                    ),
                   ),
                   const SizedBox(
                     width: 10,
                   ),
                   Flexible(
                     flex: 3,
-                    child: TextFieldLumatec(hintText: 'Cidade'),
+                    child: TextFieldLumatec(
+                      hintText: 'Cidade',
+                      controller: store.cidade,
+                    ),
                   ),
                 ],
               ),
@@ -210,7 +231,10 @@ class CadastroUsuario extends StatelessWidget {
                 children: [
                   Flexible(
                     flex: 1,
-                    child: TextFieldLumatec(hintText: 'Usuário'),
+                    child: TextFieldLumatec(
+                      hintText: 'Usuário',
+                      controller: store.usuario,
+                    ),
                   ),
                   Flexible(
                     flex: 1,
@@ -222,7 +246,10 @@ class CadastroUsuario extends StatelessWidget {
                 children: [
                   Flexible(
                     flex: 1,
-                    child: TextFieldLumatec(hintText: 'Senha'),
+                    child: TextFieldLumatec(
+                      hintText: 'Senha',
+                      controller: store.senha,
+                    ),
                   ),
                   Flexible(
                     flex: 1,
@@ -237,7 +264,10 @@ class CadastroUsuario extends StatelessWidget {
                     child: ButtonLumatec(
                       label: 'Salvar',
                       color: Color(0xff3bc171),
-                      onPressed: () {},
+                      onPressed: () {
+                        store.cadastroCompleto();
+                        Modular.to.pushNamed('lista_usuarios');
+                      },
                     ),
                   ),
                   const SizedBox(
@@ -259,7 +289,9 @@ class CadastroUsuario extends StatelessWidget {
                     child: ButtonLumatec(
                       label: 'Voltar',
                       color: Color(0xff448aff),
-                      onPressed: () {},
+                      onPressed: () {
+                        Modular.to.pop();
+                      },
                     ),
                   ),
                   Flexible(
