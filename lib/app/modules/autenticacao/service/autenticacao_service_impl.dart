@@ -17,15 +17,23 @@ class AutenticacaoServiceImpl implements AutenticacaoService {
 
   @override
   Future<RespostaService> cadastrar(CadastroUsuarioDTO dados) async {
-    UsuarioModel usuario = new UsuarioModel(name: dados.nome, email: dados.usuario, password: dados.senha);
-    var retorno = await repository.post(dotenv.env['BASEURL']! + "users", usuario.toMap());
+    UsuarioModel usuario = new UsuarioModel(
+        name: dados.nome, email: dados.usuario, password: dados.senha);
+    var retorno = await repository.post(
+        dotenv.env['BASEURL']! + "users", usuario.toMap());
     if (retorno.statusCode == 200 || retorno.statusCode == 201) {
-      if(retorno.body.containsKey('erros')){
-        return RespostaService(sucesso: false, msg: retorno.body['erros']['email'][0]);
-      }     
-      UsuarioModel usuarioSalvar = new UsuarioModel(name: retorno.body['name'], email: retorno.body['email'], token: retorno.body['token']);
+      if (retorno.body.containsKey('erros')) {
+        return RespostaService(
+            sucesso: false, msg: retorno.body['erros']['email'][0]);
+      }
+      UsuarioModel usuarioSalvar = new UsuarioModel(
+          name: retorno.body['name'],
+          email: retorno.body['email'],
+          token: retorno.body['token']);
       Funcoes.setDadosUsuarios(usuarioSalvar);
-      return RespostaService(sucesso: true, msg: "Cadastro Realizado com sucesso");;       
+      return RespostaService(
+          sucesso: true, msg: "Cadastro Realizado com sucesso");
+      ;
     } else {
       return RespostaService(sucesso: false, msg: "Erro interno no servidor");
     }
@@ -33,8 +41,10 @@ class AutenticacaoServiceImpl implements AutenticacaoService {
 
   @override
   bool realizarLogin(LoginDTO login) {
-    LoginModel loginModel = new LoginModel(login: login.login, password: login.senha);
-    var retorno = repository.post(dotenv.env['BASEURL']! + "login", loginModel.toMap());
+    LoginModel loginModel =
+        new LoginModel(login: login.login, password: login.senha);
+    var retorno =
+        repository.post(dotenv.env['BASEURL']! + "login", loginModel.toMap());
     if (retorno.statusCode == 200) {
       Funcoes.setDadosUsuarios(UsuarioModel.fromJson(retorno.body));
       return true;
